@@ -31,8 +31,8 @@ services:
         condition: service_healthy
     volumes:
       - sqlite_data:/usr/src/app/data
+      - ./Public:/usr/src/app/Public
     restart: unless-stopped
-
   # 3. Background Queue Worker (Consumer)
   worker:
     build: .

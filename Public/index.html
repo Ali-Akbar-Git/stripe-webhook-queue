@@ -1,0 +1,96 @@
+<!-- public/index.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mock SaaS Checkout</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background: #f4f6f8;
+        margin: 0;
+      }
+      .card {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 350px;
+      }
+      button {
+        background: #635bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        border-radius: 4px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      .status {
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 4px;
+        display: none;
+        text-align: center;
+      }
+      .success {
+        background: #d4edda;
+        color: #155724;
+        display: block;
+      }
+      .pending {
+        background: #fff3cd;
+        color: #856404;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Checkout SaaS Pro</h2>
+      <p>Price: <strong>$50.00 / month</strong></p>
+
+      <label>Email Address</label>
+      <input
+        type="email"
+        id="email"
+        placeholder="alex@company.com"
+        style="
+          width: 100%;
+          padding: 8px;
+          box-sizing: border-box;
+          margin-top: 5px;
+        "
+      />
+
+      <button id="pay-button" onclick="startCheckout()">Pay $50.00</button>
+
+      <div id="status-box" class="status"></div>
+    </div>
+
+    <script>
+      async function startCheckout() {
+        const email = document.getElementById("email").value;
+        if (!email) return alert("Please enter an email");
+
+        const statusBox = document.getElementById("status-box");
+        statusBox.className = "status pending";
+        statusBox.innerText = "⏳ Processing payment...";
+
+        // Simulate client polling or waiting for server confirmation
+        window.addEventListener("message", (event) => {
+          if (event.data.status === "PAID") {
+            statusBox.className = "status success";
+            statusBox.innerText = "✅ Payment Confirmed! Welcome to Pro.";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
