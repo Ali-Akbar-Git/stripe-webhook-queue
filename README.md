@@ -1,0 +1,1 @@
+![CI Status](https://github.com/Ali-Akbar-Git/stripe-webhook-queue/actions/workflows/ci.yml/badge.svg)
