@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "test": "jest --setupFiles=dotenv/config --runInBand --detectOpenHandles"
+    "test": "jest tests/ --setupFiles=dotenv/config --runInBand --detectOpenHandles --forceExit"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
