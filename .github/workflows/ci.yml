@@ -1,0 +1,51 @@
+name: Continuous Integration & Automated Test Suite
+
+# Trigger workflow on every push or pull request to the main branch
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Run Automated Test Pipeline
+    runs-on: ubuntu-latest
+
+    # Spin up a real Redis instance for our integration tests
+    services:
+      redis:
+        image: redis:alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      # 1. Check out repository code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Set up Node.js LTS environment
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 3. Clean install all dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Execute Jest Integration & Async Pipeline Tests
+      - name: Run Jest Test Suites
+        env:
+          PORT: 3000
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: 6379
+          STRIPE_WEBHOOK_SECRET: whsec_test_secret
+          NODE_ENV: test
+        run: npm test

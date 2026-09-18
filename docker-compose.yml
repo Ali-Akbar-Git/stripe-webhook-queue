@@ -1,0 +1,53 @@
+
+services:
+  # 1. Redis Message Broker
+  redis:
+    image: redis:alpine
+    container_name: webhook_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # 2. Express API Server (Ingress)
+  api:
+    build: .
+    container_name: webhook_api
+    command: node src/index.js
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY:-sk_test_mock_key}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET:-whsec_test_secret}
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - sqlite_data:/usr/src/app/data
+    restart: unless-stopped
+
+  # 3. Background Queue Worker (Consumer)
+  worker:
+    build: .
+    container_name: webhook_worker
+    command: node src/worker.js
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - sqlite_data:/usr/src/app/data
+    restart: unless-stopped
+
+volumes:
+  sqlite_data:
