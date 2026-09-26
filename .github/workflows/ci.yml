@@ -39,3 +39,15 @@ jobs:
           REDIS_PORT: 6379
           STRIPE_SECRET_KEY: sk_test_mock
           STRIPE_WEBHOOK_SECRET: whsec_test_secret
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Playwright E2E Tests
+        env:
+          REDIS_HOST: 127.0.0.1
+          REDIS_PORT: 6379
+          STRIPE_SECRET_KEY: sk_test_mock
+          STRIPE_WEBHOOK_SECRET: whsec_test_secret
+          CI: true
+        run: npm run test:e2e
