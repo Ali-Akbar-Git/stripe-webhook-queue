@@ -173,15 +173,3 @@ npx playwright test --headed
 ```
 
 ---
-
-### How to customize this before pushing:
-1. Replace `Ali-Akbar-Git` with your actual GitHub handle in the badge links and footer.
-2. Create a `.env.example` file in your root folder:
-   ```env
-   PORT=3000
-   REDIS_HOST=127.0.0.1
-   REDIS_PORT=6379
-   STRIPE_SECRET_KEY=sk_test_placeholder
-   STRIPE_WEBHOOK_SECRET=whsec_placeholder
-   DISCORD_WEBHOOK_URL=
-   ```
