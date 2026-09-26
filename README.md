@@ -181,7 +181,3 @@ npx playwright test --headed
 
 - **Muhammad Ali Akbar / Backend Integration & Test Infrastructure Engineer**
 - GitHub: [@Ali-Akbar-Git](https://github.com/Ali-Akbar-Git)
-
-```
-
-```
