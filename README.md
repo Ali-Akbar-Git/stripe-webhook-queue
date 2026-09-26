@@ -185,4 +185,3 @@ npx playwright test --headed
    STRIPE_WEBHOOK_SECRET=whsec_placeholder
    DISCORD_WEBHOOK_URL=
    ```
-3. Commit and push to GitHub!
